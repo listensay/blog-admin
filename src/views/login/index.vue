@@ -69,7 +69,7 @@ const  loginHandle = () => {
 <template>
 <div class="login-layout">
   <div class="left">
-    <!-- <img src="https://www.loliapi.com/acg/pc/"> -->
+    <img src="@/assets/login.jpg">
   </div>
   <div class="login">
     <div class="container">
@@ -109,6 +109,11 @@ const  loginHandle = () => {
   .left {
     flex: 1;
     background-color: brown;
+    img {
+      max-width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
   .login {
     width: 600px;
