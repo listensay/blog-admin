@@ -1,9 +1,14 @@
 <script setup>
 import { reactive, ref } from 'vue';
-import { userApi } from '@/api/user.js'
+import { userApi } from '@/api/user'
 import { message } from 'ant-design-vue';
+import useUserStore from '@/stores/module/user'
+
+const useUser = useUserStore()
 
 const formRef = ref();
+const labelCol = { span: 6 };
+const wrapperCol = { span: 24 };
 
 // 表单
 const formState = reactive({
@@ -44,6 +49,7 @@ const  loginHandle = () => {
 
       if(result.code === 2000) {
         message.success(result.message)
+        useUser.token = result.data
       } else {
         message.error(result.message)
       }
@@ -57,39 +63,70 @@ const  loginHandle = () => {
     message.info('请检查输入的内容');
   });
 }
+
 </script>
 
 <template>
-  <div class="login">
-    <h2>login</h2>
-    <a-form
-      ref="formRef"
-      :model="formState"
-      :rules="rules"
-    >
-      <a-form-item
-        label="用户名"
-        name="username"
-      >
-        <a-input v-model:value="formState.username" />
-      </a-form-item>
-      <a-form-item
-        label="密码"
-        name="password"
-      >
-        <a-input v-model:value="formState.password" type="password"/>
-      </a-form-item>
-    </a-form>
-    <a-button @click="loginHandle">登陆</a-button>
+<div class="login-layout">
+  <div class="left">
+    <!-- <img src="https://www.loliapi.com/acg/pc/"> -->
   </div>
+  <div class="login">
+    <div class="container">
+      <h1>后台管理系统</h1>
+      <a-form
+        ref="formRef"
+        :model="formState"
+        :rules="rules"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
+        labelAlign="left"
+      >
+        <a-form-item
+          label="Username"
+          name="username"
+        >
+          <a-input v-model:value="formState.username" />
+        </a-form-item>
+        <a-form-item
+          label="Password"
+          name="password"
+        >
+          <a-input v-model:value="formState.password" type="password"/>
+        </a-form-item>
+      </a-form>
+      <a-button @click="loginHandle" type="primary" size="large">登陆</a-button>
+    </div>
+  </div>
+</div>
 </template>
 
 <style lang="less" scoped>
-.login {
+.login-layout {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  width: 500px;
+  justify-content: space-between;
+  height: 100vh;
+  .left {
+    flex: 1;
+    background-color: brown;
+  }
+  .login {
+    width: 600px;
+    padding: 40px;
+    border-left: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 80%;
+      margin: 0 auto;
+      h1 {
+        margin-bottom: 40px;
+        text-align: center;
+      }
+    }
+  }
 }
 </style>
