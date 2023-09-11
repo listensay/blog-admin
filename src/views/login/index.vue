@@ -3,8 +3,10 @@ import { reactive, ref } from 'vue';
 import { userApi } from '@/api/user'
 import { message } from 'ant-design-vue';
 import useUserStore from '@/stores/module/user'
-
-const useUser = useUserStore()
+import { setToken } from '@/utils/auth'
+import router from '@/router'
+const userStore = useUserStore()
+console.log(userStore)
 
 const formRef = ref();
 const labelCol = { span: 6 };
@@ -21,10 +23,6 @@ const rules = {
   username: [
     {
       required: true,
-      message: '请输入用户名',
-      trigger: 'change',
-    },
-    {
       min: 5,
       message: '用户名长度不少于5',
       trigger: 'blur',
@@ -45,11 +43,13 @@ const  loginHandle = () => {
   formRef.value.validate().then(async () => {
 
     try {
-      const { data: result } = await userApi().login({ ...formState })
-
-      if(result.code === 2000) {
+      const result = await userApi().login({ ...formState })
+      console.log(result)
+      if(result.success) {
         message.success(result.message)
-        useUser.token = result.data
+        userStore.token = result
+        setToken(result.data)
+        router.push({ path: '/' })
       } else {
         message.error(result.message)
       }
@@ -108,7 +108,6 @@ const  loginHandle = () => {
   height: 100vh;
   .left {
     flex: 1;
-    background-color: brown;
     img {
       max-width: 100%;
       height: 100%;

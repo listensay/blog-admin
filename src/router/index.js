@@ -5,7 +5,22 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      component: () => import('@/Layout/index.vue')
+      redirect: '/home',
+      component: () => import('@/Layout/index.vue'),
+      children: [
+        {
+          path: '/home',
+          component: () => import('@/views/Home/index.vue')
+        },
+        {
+          path: '/changeUserinfo',
+          component: () => import('@/views/changeUserinfo/index.vue')
+        },
+        {
+          path: '/postArticle',
+          component: () => import('@/views/postArticle/index.vue')
+        },
+      ]
     },
     {
       path: '/login',

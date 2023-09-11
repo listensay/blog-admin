@@ -8,48 +8,54 @@ import {
 } from '@ant-design/icons-vue';
 
 import { ref } from 'vue';
-
-const selectedKeys = ref();
+import { useRouter } from 'vue-router';
+const selectedKeys = ref('')
+const router = useRouter()
+const changeMenuRouter = (to) => {
+  router.push({ path: '/'+to })
+}
 </script>
 
 <template>
   <div class="sider-menu">
-    <div class="logo">
-      Listen Admin
-    </div>
-    <a-menu v-model:selectedKeys="selectedKeys" mode="inline">
-      <a-menu-item key="1">
+
+    <a-menu v-model:selectedKeys="selectedKeys" :default-selected-keys="['1']" mode="inline">
+      <a-menu-item key="1" @click="changeMenuRouter('home')">
         <pie-chart-outlined />
-        <span>Option 1</span>
+        <span>仪表盘</span>
       </a-menu-item>
-      <a-menu-item key="2">
+      <a-menu-item key="2" @click="changeMenuRouter('postArticle')">
         <desktop-outlined />
-        <span>Option 2</span>
+        <span>用户管理</span>
       </a-menu-item>
       <a-sub-menu key="sub1">
         <template #title>
           <span>
             <user-outlined />
-            <span>User</span>
+            <span>文章管理</span>
           </span>
         </template>
-        <a-menu-item key="3">Tom</a-menu-item>
-        <a-menu-item key="4">Bill</a-menu-item>
-        <a-menu-item key="5">Alex</a-menu-item>
+        <a-menu-item key="33">文章列表</a-menu-item>
+        <a-menu-item key="44">文章分类</a-menu-item>
+        <a-menu-item key="55">文章标签</a-menu-item>
       </a-sub-menu>
-      <a-sub-menu key="sub2">
+      <a-sub-menu key="sub1">
         <template #title>
           <span>
-            <team-outlined />
-            <span>Team</span>
+            <user-outlined />
+            <span>互动</span>
           </span>
         </template>
-        <a-menu-item key="6">Team 1</a-menu-item>
-        <a-menu-item key="8">Team 2</a-menu-item>
+        <a-menu-item key="33">通知</a-menu-item>
+        <a-menu-item key="44">评论</a-menu-item>
       </a-sub-menu>
-      <a-menu-item key="9">
+      <a-menu-item key="3">
         <file-outlined />
-        <span>File</span>
+        <span>图片管理</span>
+      </a-menu-item>
+      <a-menu-item key="5">
+        <file-outlined />
+        <span>系统设置</span>
       </a-menu-item>
     </a-menu>
   </div>
@@ -57,20 +63,11 @@ const selectedKeys = ref();
 
 <style lang="less" scoped>
 .sider-menu {
-  .logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 64px;
-    margin-bottom: 10px;
-    font-size: 18px;
-    color: #fff;
-    cursor: pointer;
-    background-color: cadetblue;
-  }
+  padding: 10px 15px;
+  border-right: 1px solid #eee;
 
 }
-:where(.css-dev-only-do-not-override-kqecok).ant-menu .ant-menu-item {
-  border-radius: 4px;
+:where(.css-dev-only-do-not-override-kqecok).ant-menu-light.ant-menu-root.ant-menu-inline {
+  border-inline-end: none;
 }
 </style>

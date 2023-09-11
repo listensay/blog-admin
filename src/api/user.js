@@ -8,6 +8,19 @@ export const userApi = () => {
         method: 'post',
         data
       })
+    },
+    getUserinfo: () => {
+      return request({
+        url: 'user/userinfo',
+        method: 'get'
+      })
+    },
+    changeUserinfo: data => {
+      return request({
+        url: 'user/changeUserInfo',
+        method: 'post',
+        data
+      })
     }
   }
 }
