@@ -46,6 +46,5 @@ defineExpose({ getContent })
 <style>
 .markdown-container {
   background-color: #fff;
-  margin: 20px 0;
 }
 </style>

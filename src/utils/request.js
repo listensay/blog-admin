@@ -1,8 +1,8 @@
 import axios from 'axios'
 import useUserStore from '../stores/module/user'
 import { getToken, removeToken } from '@/utils/auth'
-import { message } from 'ant-design-vue';
-import router from '../router';
+import { message } from 'ant-design-vue'
+import router from '../router'
 
 // create an axios instance
 const service = axios.create({
@@ -12,14 +12,14 @@ const service = axios.create({
 
 // request interceptor 请求拦截器
 service.interceptors.request.use(
-  config => {
+  (config) => {
     const userStore = useUserStore()
     if (userStore.token) {
       config.headers['Authorization'] = 'Bearer ' + getToken()
     }
     return config
   },
-  error => {
+  (error) => {
     console.log(error)
     return Promise.reject(error)
   }
@@ -27,7 +27,7 @@ service.interceptors.request.use(
 
 // response interceptor 响应拦截器
 service.interceptors.response.use(
-  response => {
+  (response) => {
     const res = response.data
 
     if (res.code !== 2000) {
@@ -45,7 +45,7 @@ service.interceptors.response.use(
       return res
     }
   },
-  error => {
+  (error) => {
     console.log('err' + error) // for debug
     message.error(error)
     return Promise.reject(error)

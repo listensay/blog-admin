@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export const userApi = () => {
   return {
-    login: data => {
+    login: (data) => {
       return request({
         url: '/user/login',
         method: 'post',
@@ -15,7 +15,7 @@ export const userApi = () => {
         method: 'get'
       })
     },
-    changeUserinfo: data => {
+    changeUserinfo: (data) => {
       return request({
         url: 'user/changeUserInfo',
         method: 'post',

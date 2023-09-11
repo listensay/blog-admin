@@ -15,7 +15,6 @@ router.beforeEach(async (to, from, next) => {
   const hasToken = getToken()
   const userStore = useUserStore()
 
-
   if (hasToken) {
     if (to.path === '/login') {
       // if is logged in, redirect to the home page

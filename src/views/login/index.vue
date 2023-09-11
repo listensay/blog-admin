@@ -1,16 +1,16 @@
 <script setup>
-import { reactive, ref } from 'vue';
+import { reactive, ref } from 'vue'
 import { userApi } from '@/api/user'
-import { message } from 'ant-design-vue';
+import { message } from 'ant-design-vue'
 import useUserStore from '@/stores/module/user'
 import { setToken } from '@/utils/auth'
 import router from '@/router'
 const userStore = useUserStore()
 console.log(userStore)
 
-const formRef = ref();
-const labelCol = { span: 6 };
-const wrapperCol = { span: 24 };
+const formRef = ref()
+const labelCol = { span: 6 }
+const wrapperCol = { span: 24 }
 
 // 表单
 const formState = reactive({
@@ -25,80 +25,73 @@ const rules = {
       required: true,
       min: 5,
       message: '用户名长度不少于5',
-      trigger: 'blur',
-    },
+      trigger: 'blur'
+    }
   ],
   password: [
     {
       required: true,
       min: 5,
       message: '密码长度不少于5',
-      trigger: 'blur',
+      trigger: 'blur'
     }
   ]
 }
 
 // 登陆处理
-const  loginHandle = () => {
-  formRef.value.validate().then(async () => {
+const loginHandle = () => {
+  formRef.value
+    .validate()
+    .then(async () => {
+      try {
+        const result = await userApi().login({ ...formState })
+        if (result.success) {
+          message.success(result.message)
+          userStore.token = result
+          setToken(result.data)
+          router.push({ path: '/' })
+        } else {
+          message.error(result.message)
+        }
 
-    try {
-      const result = await userApi().login({ ...formState })
-      console.log(result)
-      if(result.success) {
-        message.success(result.message)
-        userStore.token = result
-        setToken(result.data)
-        router.push({ path: '/' })
-      } else {
-        message.error(result.message)
+        formRef.value.resetFields()
+      } catch (error) {
+        console.log(error)
       }
-
-      formRef.value.resetFields()
-    } catch (error) {
-      console.log(error)
-    }
-
-  }).catch(error => {
-    message.info('请检查输入的内容');
-  });
+    })
+    .catch((error) => {
+      message.info('请检查输入的内容')
+    })
 }
-
 </script>
 
 <template>
-<div class="login-layout">
-  <div class="left">
-    <img src="@/assets/login.jpg">
-  </div>
-  <div class="login">
-    <div class="container">
-      <h1>后台管理系统</h1>
-      <a-form
-        ref="formRef"
-        :model="formState"
-        :rules="rules"
-        :label-col="labelCol"
-        :wrapper-col="wrapperCol"
-        labelAlign="left"
-      >
-        <a-form-item
-          label="Username"
-          name="username"
+  <div class="login-layout">
+    <div class="left">
+      <img src="@/assets/login.jpg" />
+    </div>
+    <div class="login">
+      <div class="container">
+        <h1>后台管理系统</h1>
+        <a-form
+          ref="formRef"
+          :model="formState"
+          :rules="rules"
+          :label-col="labelCol"
+          :wrapper-col="wrapperCol"
+          labelAlign="left"
         >
-          <a-input v-model:value="formState.username" />
-        </a-form-item>
-        <a-form-item
-          label="Password"
-          name="password"
-        >
-          <a-input v-model:value="formState.password" type="password"/>
-        </a-form-item>
-      </a-form>
-      <a-button @click="loginHandle" type="primary" size="large">登陆</a-button>
+          <a-form-item label="Username" name="username">
+            <a-input v-model:value="formState.username" />
+          </a-form-item>
+          <a-form-item label="Password" name="password">
+            <a-input v-model:value="formState.password" type="password" />
+          </a-form-item>
+        </a-form>
+        <a-button @click="loginHandle" type="primary" size="large">登陆</a-button>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <style lang="less" scoped>

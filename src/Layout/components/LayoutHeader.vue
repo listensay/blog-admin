@@ -1,9 +1,9 @@
 <script setup>
 import { DownOutlined } from '@ant-design/icons-vue'
 import { removeToken } from '@/utils/auth'
-import { useRouter } from 'vue-router';
-import { message } from 'ant-design-vue';
-import useUserStore from '../../stores/module/user';
+import { useRouter } from 'vue-router'
+import { message } from 'ant-design-vue'
+import useUserStore from '../../stores/module/user'
 const router = useRouter()
 const userStore = useUserStore()
 
@@ -26,7 +26,11 @@ const changeUserinfo = () => {
     <div class="right">
       <a-dropdown>
         <a class="ant-dropdown-link" @click.prevent style="color: #fff; display: block">
-          <a-avatar size="large" :src="userStore.userinfo.avatar" :style="{ verticalAlign: 'middle', 'margin-right': '5px' }"></a-avatar>
+          <a-avatar
+            size="large"
+            :src="userStore.userinfo.avatar"
+            :style="{ verticalAlign: 'middle', 'margin-right': '5px' }"
+          ></a-avatar>
           {{ userStore.userinfo.nickname }}
           <DownOutlined />
         </a>

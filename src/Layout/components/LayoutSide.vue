@@ -4,22 +4,21 @@ import {
   DesktopOutlined,
   UserOutlined,
   TeamOutlined,
-  FileOutlined,
-} from '@ant-design/icons-vue';
+  FileOutlined
+} from '@ant-design/icons-vue'
 
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-const selectedKeys = ref('')
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+const selectedKeys = ref(['1'])
 const router = useRouter()
 const changeMenuRouter = (to) => {
-  router.push({ path: '/'+to })
+  router.push({ path: '/' + to })
 }
 </script>
 
 <template>
   <div class="sider-menu">
-
-    <a-menu v-model:selectedKeys="selectedKeys" :default-selected-keys="['1']" mode="inline">
+    <a-menu v-model:selectedKeys="selectedKeys" mode="inline">
       <a-menu-item key="1" @click="changeMenuRouter('home')">
         <pie-chart-outlined />
         <span>仪表盘</span>
@@ -35,11 +34,11 @@ const changeMenuRouter = (to) => {
             <span>文章管理</span>
           </span>
         </template>
-        <a-menu-item key="33">文章列表</a-menu-item>
-        <a-menu-item key="44">文章分类</a-menu-item>
-        <a-menu-item key="55">文章标签</a-menu-item>
+        <a-menu-item key="3" @click="changeMenuRouter('articleList')">文章列表</a-menu-item>
+        <a-menu-item key="4">文章分类</a-menu-item>
+        <a-menu-item key="5">文章标签</a-menu-item>
       </a-sub-menu>
-      <a-sub-menu key="sub1">
+      <a-sub-menu key="sub2">
         <template #title>
           <span>
             <user-outlined />
@@ -49,11 +48,11 @@ const changeMenuRouter = (to) => {
         <a-menu-item key="33">通知</a-menu-item>
         <a-menu-item key="44">评论</a-menu-item>
       </a-sub-menu>
-      <a-menu-item key="3">
+      <a-menu-item key="6">
         <file-outlined />
         <span>图片管理</span>
       </a-menu-item>
-      <a-menu-item key="5">
+      <a-menu-item key="7">
         <file-outlined />
         <span>系统设置</span>
       </a-menu-item>
@@ -65,7 +64,6 @@ const changeMenuRouter = (to) => {
 .sider-menu {
   padding: 10px 15px;
   border-right: 1px solid #eee;
-
 }
 :where(.css-dev-only-do-not-override-kqecok).ant-menu-light.ant-menu-root.ant-menu-inline {
   border-inline-end: none;

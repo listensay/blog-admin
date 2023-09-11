@@ -10,7 +10,7 @@ import LayoutHeader from '@/Layout/components/LayoutHeader.vue'
         <LayoutSide></LayoutSide>
       </a-layout-sider>
       <a-layout>
-        <a-layout-header style="background: #4338ca;color: #fff; padding: 0 20px">
+        <a-layout-header style="background: #4338ca; color: #fff; padding: 0 20px">
           <LayoutHeader></LayoutHeader>
         </a-layout-header>
         <a-layout-content>
