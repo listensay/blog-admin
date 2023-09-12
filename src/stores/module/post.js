@@ -20,6 +20,10 @@ const usePostStore = defineStore('post', {
       const result = await usePostApi.listPost(data)
       this.list = result.data.list
       return result
+    },
+    async fetchDeletePost(id) {
+      const result = await usePostApi.deletePost(id)
+      return result
     }
   }
 })

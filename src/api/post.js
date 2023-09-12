@@ -14,6 +14,12 @@ export const postApi = () => {
         url: '/post/listPost',
         method: 'get'
       })
+    },
+    deletePost: (id) => {
+      return request({
+        url: `/post/deletePost/${id}`,
+        method: 'delete'
+      })
     }
   }
 }
