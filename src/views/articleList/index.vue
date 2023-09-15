@@ -1,9 +1,11 @@
 <script setup>
 import { computed, reactive } from 'vue'
 import { CaretDownOutlined, DeleteFilled, EyeInvisibleFilled } from '@ant-design/icons-vue'
+import moment from 'moment'
 
 import usePostStore from '@/stores/module/post'
 import { message } from 'ant-design-vue'
+import { useRouter } from 'vue-router'
 const postStore = usePostStore()
 postStore.fetchListPost()
 
@@ -54,6 +56,15 @@ const confirm = async (post_id) => {
     console.log(error)
   }
 }
+const router = useRouter()
+
+const editArticle = (record) => {
+  router.push({
+    path: '/editArticle',
+    query: { post_id: record.post_id },
+    meta: { record }
+  })
+}
 </script>
 
 <template>
@@ -61,7 +72,7 @@ const confirm = async (post_id) => {
     <a-card title="文章列表">
       <div>
         <a-table
-          rowKey="post_id"
+          row-key="post_id"
           :row-selection="{ selectedRowKeys: state.selectedRowKeys, onChange: onSelectChange }"
           :columns="columns"
           :data-source="data || null"
@@ -69,15 +80,23 @@ const confirm = async (post_id) => {
         >
           <template #bodyCell="{ column, text, record }">
             <template v-if="column.dataIndex === 'title'">
-              <a-button type="link" style="padding: 0">{{ text }}</a-button>
+              <a-button type="link" style="padding: 0" @click="editArticle(record)">{{ text }}</a-button>
+            </template>
+            <!-- 创建日期 -->
+            <template v-if="column.dataIndex === 'create_date'">
+              <a-button type="link" style="padding: 0">
+                {{
+                  moment(text).format('YYYY-MM-DD')
+                }}
+              </a-button>
             </template>
             <template v-if="column.key === 'action'">
               <a-popconfirm
                 :title="`是否确定删除《${record.title}》这个文章`"
                 ok-text="是"
                 cancel-text="否"
-                @confirm="confirm(record.post_id)"
                 placement="left"
+                @confirm="confirm(record.post_id)"
               >
                 <a-button type="link" danger style="padding: 0">删除</a-button>
               </a-popconfirm>

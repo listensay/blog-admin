@@ -21,6 +21,10 @@ const router = createRouter({
           component: () => import('@/views/postArticle/index.vue')
         },
         {
+          path: '/editArticle',
+          component: () => import('@/views/editArticle/index.vue')
+        },
+        {
           path: '/articleList',
           component: () => import('@/views/articleList/index.vue')
         }

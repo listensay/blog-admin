@@ -3,7 +3,6 @@ import {
   PieChartOutlined,
   DesktopOutlined,
   UserOutlined,
-  TeamOutlined,
   FileOutlined
 } from '@ant-design/icons-vue'
 

@@ -7,12 +7,14 @@
 <script setup>
 import MKEditor from '@toast-ui/editor'
 import '@toast-ui/editor/dist/toastui-editor.css'
-import { defineProps, onMounted, defineExpose } from 'vue'
+import { defineProps, onMounted, defineExpose, computed, watch } from 'vue'
 
 const props = defineProps({
   content: { type: String, default: '' },
   height: { type: String, default: '500' }
 })
+
+const content = computed(() => props.content)
 
 let mkEditor
 let el
@@ -31,10 +33,14 @@ const initMkeditor = () => {
   })
 
   // 数据回显
-  if (props.content) {
-    mkEditor.setHTML(props.content)
+  if (content.value) {
+    mkEditor.setHTML(content.value)
   }
 }
+
+watch(content, () => {
+  initMkeditor()
+})
 
 const getContent = () => {
   return mkEditor.getHTML()

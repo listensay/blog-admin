@@ -20,6 +20,19 @@ export const postApi = () => {
         url: `/post/deletePost/${id}`,
         method: 'delete'
       })
+    },
+    contentPost: (post_id) => {
+      return request({
+        url: `/post/listPost?post_id=${post_id}`,
+        method: 'get'
+      })
+    },
+    editPost: (data) => {
+      return request({
+        url: `/post/editPost`,
+        method: 'post',
+        data
+      })
     }
   }
 }
