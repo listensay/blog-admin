@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref } from 'vue'
 import Markdown from '@/components/Markdown/index.vue'
 import { message } from 'ant-design-vue'
 import usePostStore from '@/stores/module/post'
@@ -12,20 +12,28 @@ const props = defineProps({
   edit: { type: Object, default: () => ({ state: false }) }
 })
 
-if (props.edit.post_id) {
-  postStore.fetchContentPost(props.edit.post_id)
+const title = ref('')
+const formState = ref({})
+
+const getArticleContent = async post_id => {
+  try {
+    await postStore.fetchContentPost(post_id).then(result => {
+      formState.value.title = result.data.list[0].title
+      formState.value.content = result.data.list[0].content
+    })
+  } catch (error) {
+    console.log(error)
+  }
 }
 
-const title = computed(() => postStore.currentArticle.title)
+if (props.edit.post_id) {
+  getArticleContent(props.edit.post_id)
+}
 
 // Markdown
-const content = computed(() => postStore.currentArticle.content)
 const markdownRef = ref('')
 
 const formRef = ref()
-const formState = reactive({
-  title
-})
 
 const rules = {
   title: [
@@ -42,23 +50,27 @@ const onSubmit = () => {
     .validate()
     .then(async () => {
       if (props.edit.state) {
-        await postStore
-          .fetchEditPost({
-            post_id: props.edit.post_id,
-            title: formState.title,
-            content: markdownRef.value.getContent()
-          })
-          .then((res) => {
-            if (res.message) {
-              message.success('文章更新成功')
-              router.push({ path: '/articleList' })
-            } else {
-              message.error(res.message)
-            }
-          })
+        try {
+          await postStore
+            .fetchEditPost({
+              post_id: props.edit.post_id,
+              title: formState.value.title,
+              content: markdownRef.value.getContent()
+            })
+            .then((res) => {
+              if (res.success) {
+                message.success('文章更新成功')
+                router.push({ path: '/articleList' })
+              } else {
+                message.error(res.message)
+              }
+            })
+        } catch (error) {
+          message.error(error)
+        }
       } else {
         await postStore
-          .fetchAddPost({ title: formState.title, content: markdownRef.value.getContent() })
+          .fetchAddPost({ title: formState.value.title, content: markdownRef.value.getContent() })
           .then((res) => {
             if (res.success) {
               message.success('文章添加成功 🎉')
@@ -85,7 +97,7 @@ const onSubmit = () => {
           <a-input v-model:value="formState.title" />
         </a-form-item>
         <a-form-item>
-          <markdown ref="markdownRef" :content="content" height="600" />
+          <markdown ref="markdownRef" :content="formState.content" height="600" />
         </a-form-item>
         <a-form-item>
           <a-button style="margin-right: 10px" @click="onSubmit">草稿</a-button>

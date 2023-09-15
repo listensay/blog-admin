@@ -4,6 +4,6 @@ import ArticleTemplate from '@/components/ArticleTemplate/index.vue'
 
 <template>
   <div class="layout-margin">
-    <ArticleTemplate></ArticleTemplate>
+    <ArticleTemplate />
   </div>
 </template>

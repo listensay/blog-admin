@@ -60,9 +60,8 @@ const router = useRouter()
 
 const editArticle = (record) => {
   router.push({
-    path: '/editArticle',
-    query: { post_id: record.post_id },
-    meta: { record }
+    name: 'EditArticle',
+    query: { post_id: record.post_id }
   })
 }
 </script>

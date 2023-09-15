@@ -29,7 +29,7 @@ export const postApi = () => {
     },
     editPost: (data) => {
       return request({
-        url: `/post/editPost`,
+        url: '/post/editPost',
         method: 'post',
         data
       })
