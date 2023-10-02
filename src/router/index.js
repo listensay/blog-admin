@@ -7,33 +7,63 @@ const router = createRouter({
       path: '/',
       redirect: '/home',
       component: () => import('@/Layout/index.vue'),
+      meta: {
+        hiding: true
+      },
       children: [
         {
           path: '/home',
-          component: () => import('@/views/Home/index.vue')
-        },
-        {
-          path: '/changeUserinfo',
-          component: () => import('@/views/changeUserinfo/index.vue')
+          component: () => import('@/views/Home/index.vue'),
+          meta: {
+            title: '仪表盘'
+          }
         },
         {
           path: '/postArticle',
-          component: () => import('@/views/postArticle/index.vue')
+          component: () => import('@/views/postArticle/index.vue'),
+          meta: {
+            title: '发布文章'
+          }
         },
         {
-          path: '/editArticle',
-          name: 'EditArticle',
-          component: () => import('@/views/editArticle/index.vue')
-        },
-        {
-          path: '/articleList',
-          component: () => import('@/views/articleList/index.vue')
+          path: '/article-management',
+          redirect: '/article-management/article-list',
+          meta: {
+            title: '文章管理'
+          },
+          children: [
+            {
+              path: '/article-management/article-list',
+              component: () => import('@/views/articleList/index.vue'),
+              meta: {
+                title: '文章列表'
+              }
+            },
+            {
+              path: '/article-management/changeUserinfo',
+              component: () => import('@/views/changeUserinfo/index.vue'),
+              meta: {
+                hiding: true
+              }
+            },
+            {
+              path: '/article-management/editArticle',
+              name: 'EditArticle',
+              component: () => import('@/views/editArticle/index.vue'),
+              meta: {
+                hiding: true
+              }
+            }
+          ]
         }
       ]
     },
     {
       path: '/login',
-      component: () => import('@/views/login/index.vue')
+      component: () => import('@/views/login/index.vue'),
+      meta: {
+        hiding: true
+      }
     }
   ]
 })

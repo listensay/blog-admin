@@ -31,6 +31,7 @@ const columns = [
     align: 'center'
   }
 ]
+
 const data = computed(() => postStore.list)
 
 const state = reactive({
