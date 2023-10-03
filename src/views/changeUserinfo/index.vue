@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, toRefs, computed } from 'vue'
+import { ref, reactive } from 'vue'
 import { message } from 'ant-design-vue'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import useUserStore from '../../stores/module/user'
@@ -9,12 +9,14 @@ const { userinfo } = storeToRefs(userStore)
 
 const nickname = ref(userinfo.value.nickname)
 const email = ref(userinfo.value.email)
+const description = ref(userinfo.value.description)
 
 const formRef = ref()
 
 const formState = reactive({
   nickname: userStore.userinfo.nickname,
-  email: userStore.userinfo.email
+  email: userStore.userinfo.email,
+  description: userStore.userinfo.description
 })
 
 const rules = {
@@ -45,14 +47,22 @@ const rules = {
       max: 50,
       message: '邮箱不得超过50字符'
     }
+  ],
+  description: [
+    {
+      required: true,
+      message: '请输入个性签名',
+      trigger: 'change'
+    }
   ]
 }
 
 const fileList = ref([])
 const loading = ref(false)
 const imageUrl = ref(userStore.userinfo.avatar)
+const bgUrl = ref(userStore.userinfo.bg)
 
-const handleChange = (info) => {
+const handleChangeImageUrl = (info) => {
   console.log(info)
   if (info.file.status === 'uploading') {
     loading.value = true
@@ -62,6 +72,25 @@ const handleChange = (info) => {
   if (info.file.status === 'done') {
     // Get this url from response in real world.
     imageUrl.value = info.file.response.data.img
+    loading.value = false
+  }
+
+  if (info.file.status === 'error') {
+    loading.value = false
+    message.error('upload error')
+  }
+}
+
+const handleChangeBgUrl = (info) => {
+  console.log(info)
+  if (info.file.status === 'uploading') {
+    loading.value = true
+    return
+  }
+
+  if (info.file.status === 'done') {
+    // Get this url from response in real world.
+    bgUrl.value = info.file.response.data.img
     loading.value = false
   }
 
@@ -88,7 +117,7 @@ const onSubmit = () => {
     .validate()
     .then(async () => {
       await userStore
-        .fetchChangeUserinfo({ avatar: imageUrl.value, ...formState })
+        .fetchChangeUserinfo({ avatar: imageUrl.value, bg: bgUrl.value, ...formState })
         .then((result) => {
           if (result) {
             message.success('修改成功!')
@@ -105,7 +134,7 @@ const onSubmit = () => {
   <div class="changeUserinfo layout-margin">
     <a-card title="修改资料" style="width: 700px; margin: 0 auto">
       <a-form ref="formRef" :model="formState" :rules="rules">
-        <a-form-item ref="avatar" name="avatar">
+        <a-form-item ref="avatar" label="头像" name="avatar">
           <a-upload
             v-model:file-list="fileList"
             name="img"
@@ -114,12 +143,32 @@ const onSubmit = () => {
             :show-upload-list="false"
             action="http://127.0.0.1:3000/api/images/avatar"
             :before-upload="beforeUpload"
-            @change="handleChange"
+            @change="handleChangeImageUrl"
           >
-            <img v-if="imageUrl" :src="imageUrl" alt="avatar" width="100" />
+            <img v-if="imageUrl" :src="imageUrl" alt="avatar" width="100">
             <div v-else>
-              <loading-outlined v-if="loading"></loading-outlined>
-              <plus-outlined v-else></plus-outlined>
+              <loading-outlined v-if="loading" />
+              <plus-outlined v-else />
+              <div class="ant-upload-text">Upload</div>
+            </div>
+          </a-upload>
+        </a-form-item>
+        <a-form-item ref="avatar" label="背景图" name="avatar">
+          <a-upload
+            v-model:file-list="fileList"
+            name="img"
+            list-type="picture-card"
+            class="bg-uploader"
+            style="width: 100%;"
+            :show-upload-list="false"
+            action="http://127.0.0.1:3000/api/images/avatar"
+            :before-upload="beforeUpload"
+            @change="handleChangeBgUrl"
+          >
+            <img v-if="bgUrl" :src="bgUrl" alt="bgUrl" class="bg-img">
+            <div v-else>
+              <loading-outlined v-if="loading" />
+              <plus-outlined v-else />
               <div class="ant-upload-text">Upload</div>
             </div>
           </a-upload>
@@ -129,6 +178,9 @@ const onSubmit = () => {
         </a-form-item>
         <a-form-item ref="email" label="邮箱" name="email">
           <a-input v-model:value="formState.email" />
+        </a-form-item>
+        <a-form-item ref="description" label="个性签名" name="description">
+          <a-input v-model:value="formState.description" />
         </a-form-item>
         <a-form-item>
           <a-button type="primary" @click="onSubmit">修改</a-button>
@@ -140,12 +192,18 @@ const onSubmit = () => {
 
 <style lang="less" scoped>
 .avatar-uploader > .ant-upload {
+  overflow: hidden;
   width: 128px;
   height: 128px;
 }
 .avatar-uploader > .ant-upload > img {
   max-width: 100%;
 }
+
+.bg-uploader .bg-img {
+  max-width: 100%;
+}
+
 .ant-upload-select-picture-card i {
   font-size: 32px;
   color: #999;

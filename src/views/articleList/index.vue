@@ -16,7 +16,7 @@ const columns = [
   },
   {
     title: '作者',
-    dataIndex: 'username'
+    dataIndex: 'nickname'
   },
   {
     width: 200,
@@ -84,11 +84,7 @@ const editArticle = (record) => {
             </template>
             <!-- 创建日期 -->
             <template v-if="column.dataIndex === 'create_date'">
-              <a-button type="link" style="padding: 0">
-                {{
-                  moment(text).format('YYYY-MM-DD')
-                }}
-              </a-button>
+              {{ moment(text).format('YYYY-MM-DD') }}
             </template>
             <template v-if="column.key === 'action'">
               <a-popconfirm

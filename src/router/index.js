@@ -40,13 +40,6 @@ const router = createRouter({
               }
             },
             {
-              path: '/article-management/changeUserinfo',
-              component: () => import('@/views/changeUserinfo/index.vue'),
-              meta: {
-                hiding: true
-              }
-            },
-            {
               path: '/article-management/editArticle',
               name: 'EditArticle',
               component: () => import('@/views/editArticle/index.vue'),
@@ -55,6 +48,13 @@ const router = createRouter({
               }
             }
           ]
+        },
+        {
+          path: '/changeUserinfo',
+          component: () => import('@/views/changeUserinfo/index.vue'),
+          meta: {
+            hiding: true
+          }
         }
       ]
     },

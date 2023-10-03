@@ -60,7 +60,7 @@ const onSubmit = () => {
             .then((res) => {
               if (res.success) {
                 message.success('文章更新成功')
-                router.push({ path: '/articleList' })
+                router.push({ path: '/article-management/article-list' })
               } else {
                 message.error(res.message)
               }
@@ -74,7 +74,7 @@ const onSubmit = () => {
           .then((res) => {
             if (res.success) {
               message.success('文章添加成功 🎉')
-              router.push({ path: '/articleList' })
+              router.push({ path: '/article-management/article-list' })
               formRef.value.resetFields()
             } else {
               message.error(res.message)

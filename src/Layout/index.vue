@@ -7,14 +7,14 @@ import LayoutHeader from '@/Layout/components/LayoutHeader.vue'
   <div class="layout">
     <a-layout style="min-height: 100vh">
       <a-layout-sider width="240">
-        <LayoutSide></LayoutSide>
+        <LayoutSide />
       </a-layout-sider>
       <a-layout>
         <a-layout-header style="background: #4338ca; color: #fff; padding: 0 20px">
-          <LayoutHeader></LayoutHeader>
+          <LayoutHeader />
         </a-layout-header>
         <a-layout-content>
-          <router-view></router-view>
+          <router-view />
         </a-layout-content>
       </a-layout>
     </a-layout>
