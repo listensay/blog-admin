@@ -21,7 +21,6 @@ menuList.forEach(element => {
     if (result) {
       selectedKeys.value[0] = route.path
     }
-    console.log(result)
   } else if (element.path === route.path) {
     selectedKeys.value[0] = route.path
   }

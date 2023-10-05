@@ -46,6 +46,13 @@ const router = createRouter({
               meta: {
                 hiding: true
               }
+            },
+            {
+              path: '/article-management/article-category',
+              component: () => import('@/views/category/index.vue'),
+              meta: {
+                title: '文章分类'
+              }
             }
           ]
         },

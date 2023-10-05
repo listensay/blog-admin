@@ -33,6 +33,7 @@ module.exports = {
         ignores: ['index'] // 需要忽略的组件名
       }
     ],
+    'space-before-function-paren': 0,
     camelcase: 'off',
     '@typescript-eslint/camelcase': 0
 

@@ -1,9 +1,12 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import Markdown from '@/components/Markdown/index.vue'
 import { message } from 'ant-design-vue'
 import usePostStore from '@/stores/module/post'
 import { useRouter } from 'vue-router'
+import useCategoryStore from '@/stores/module/category'
+import { storeToRefs } from 'pinia'
+
 const postStore = usePostStore()
 const router = useRouter()
 
@@ -12,14 +15,21 @@ const props = defineProps({
   edit: { type: Object, default: () => ({ state: false }) }
 })
 
+const categoryStore = useCategoryStore()
+categoryStore.fetchGetCategory()
+
+const { category } = storeToRefs(categoryStore)
+
 const title = ref('')
 const formState = ref({})
 
+const category_value = ref(1)
 const getArticleContent = async post_id => {
   try {
     await postStore.fetchContentPost(post_id).then(result => {
       formState.value.title = result.data.list[0].title
       formState.value.content = result.data.list[0].content
+      category_value.value = result.data.list[0].category_id
     })
   } catch (error) {
     console.log(error)
@@ -55,7 +65,8 @@ const onSubmit = () => {
             .fetchEditPost({
               post_id: props.edit.post_id,
               title: formState.value.title,
-              content: markdownRef.value.getContent()
+              content: markdownRef.value.getContent(),
+              category_id: category_value.value
             })
             .then((res) => {
               if (res.success) {
@@ -70,7 +81,11 @@ const onSubmit = () => {
         }
       } else {
         await postStore
-          .fetchAddPost({ title: formState.value.title, content: markdownRef.value.getContent() })
+          .fetchAddPost({
+            title: formState.value.title,
+            content: markdownRef.value.getContent(),
+            category_id: category_value.value
+          })
           .then((res) => {
             if (res.success) {
               message.success('文章添加成功 🎉')
@@ -82,10 +97,24 @@ const onSubmit = () => {
           })
       }
     })
-    .catch((error) => {
-      console.log(error)
+    .catch(() => {
+      console.log(category_value)
       message.info('请检查内容哦 (*╹▽╹*)')
     })
+}
+
+const options = ref([])
+
+watch(category, () => {
+  if (Array.isArray(category.value)) {
+    category.value.forEach(item => {
+      options.value.push({ value: item.category_id, label: item.category_name })
+    })
+  }
+})
+
+const filterOption = (input, option) => {
+  return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0
 }
 </script>
 
@@ -96,6 +125,18 @@ const onSubmit = () => {
         <a-form-item ref="title" label="文章标题" name="title">
           <a-input v-model:value="formState.title" />
         </a-form-item>
+
+        <a-form-item ref="category" label="文章分类" name="category">
+          <a-select
+            v-model:value="category_value"
+            show-search
+            placeholder="Select a person"
+            style="width: 200px"
+            :options="options"
+            :filter-option="filterOption"
+          />
+        </a-form-item>
+
         <a-form-item>
           <markdown ref="markdownRef" :content="formState.content" height="600" />
         </a-form-item>

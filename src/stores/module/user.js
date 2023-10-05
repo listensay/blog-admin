@@ -9,7 +9,7 @@ const useUserStore = defineStore('useUser', {
   }),
   actions: {
     // 获取用户信息
-    async fetchUserinfo() {
+    async fetchUserinfo () {
       try {
         const result = await userApi().getUserinfo()
         this.userinfo = result.data.userinfo
@@ -18,7 +18,7 @@ const useUserStore = defineStore('useUser', {
       }
     },
     // 修改用户资料
-    async fetchChangeUserinfo(data) {
+    async fetchChangeUserinfo (data) {
       try {
         const result = await userApi().changeUserinfo(data)
         await this.fetchUserinfo()

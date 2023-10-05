@@ -33,6 +33,9 @@ export const postApi = () => {
         method: 'post',
         data
       })
+    },
+    category: () => {
+      return request({ url: '/post/category' })
     }
   }
 }

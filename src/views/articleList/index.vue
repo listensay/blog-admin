@@ -1,6 +1,6 @@
 <script setup>
 import { computed, reactive } from 'vue'
-import { CaretDownOutlined, DeleteFilled, EyeInvisibleFilled } from '@ant-design/icons-vue'
+// import { CaretDownOutlined, DeleteFilled, EyeInvisibleFilled } from '@ant-design/icons-vue'
 import moment from 'moment'
 
 import usePostStore from '@/stores/module/post'
@@ -17,6 +17,10 @@ const columns = [
   {
     title: '作者',
     dataIndex: 'nickname'
+  },
+  {
+    title: '分类',
+    dataIndex: 'category_name'
   },
   {
     width: 200,
@@ -98,7 +102,7 @@ const editArticle = (record) => {
               </a-popconfirm>
             </template>
           </template>
-          <template #footer>
+          <!-- <template #footer>
             <a-dropdown>
               <template #overlay>
                 <a-menu @click="handleMenuClick">
@@ -117,7 +121,7 @@ const editArticle = (record) => {
                 <CaretDownOutlined />
               </a-button>
             </a-dropdown>
-          </template>
+          </template> -->
         </a-table>
       </div>
     </a-card>
