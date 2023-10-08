@@ -1,5 +1,6 @@
 <script setup>
 import { ref, reactive } from 'vue'
+import ChangeProfile from './components/changeProfile/index.vue'
 import { message } from 'ant-design-vue'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import useUserStore from '../../stores/module/user'
@@ -132,85 +133,97 @@ const onSubmit = () => {
 
 <template>
   <div class="changeUserinfo layout-margin">
-    <a-card title="修改资料" style="width: 700px; margin: 0 auto">
-      <a-form ref="formRef" :model="formState" :rules="rules">
-        <a-form-item ref="avatar" label="头像" name="avatar">
-          <a-upload
-            v-model:file-list="fileList"
-            name="img"
-            list-type="picture-card"
-            class="avatar-uploader"
-            :show-upload-list="false"
-            action="http://127.0.0.1:3000/api/images/avatar"
-            :before-upload="beforeUpload"
-            @change="handleChangeImageUrl"
-          >
-            <img v-if="imageUrl" :src="imageUrl" alt="avatar" width="100">
-            <div v-else>
-              <loading-outlined v-if="loading" />
-              <plus-outlined v-else />
-              <div class="ant-upload-text">Upload</div>
-            </div>
-          </a-upload>
-        </a-form-item>
-        <a-form-item ref="avatar" label="背景图" name="avatar">
-          <a-upload
-            v-model:file-list="fileList"
-            name="img"
-            list-type="picture-card"
-            class="bg-uploader"
-            style="width: 100%;"
-            :show-upload-list="false"
-            action="http://127.0.0.1:3000/api/images/avatar"
-            :before-upload="beforeUpload"
-            @change="handleChangeBgUrl"
-          >
-            <img v-if="bgUrl" :src="bgUrl" alt="bgUrl" class="bg-img">
-            <div v-else>
-              <loading-outlined v-if="loading" />
-              <plus-outlined v-else />
-              <div class="ant-upload-text">Upload</div>
-            </div>
-          </a-upload>
-        </a-form-item>
-        <a-form-item ref="nickname" label="昵称" name="nickname">
-          <a-input v-model:value="formState.nickname" />
-        </a-form-item>
-        <a-form-item ref="email" label="邮箱" name="email">
-          <a-input v-model:value="formState.email" />
-        </a-form-item>
-        <a-form-item ref="description" label="个性签名" name="description">
-          <a-input v-model:value="formState.description" />
-        </a-form-item>
-        <a-form-item>
-          <a-button type="primary" @click="onSubmit">修改</a-button>
-        </a-form-item>
-      </a-form>
-    </a-card>
+    <a-row :gutter="[16, 16]">
+      <a-col :span="12">
+        <a-card title="修改资料">
+          <a-form ref="formRef" :model="formState" :rules="rules">
+            <a-form-item ref="avatar" label="头像" name="avatar">
+              <a-upload
+                v-model:file-list="fileList"
+                name="img"
+                list-type="picture-card"
+                class="avatar-uploader"
+                :show-upload-list="false"
+                action="http://127.0.0.1:3000/api/images/avatar"
+                :before-upload="beforeUpload"
+                @change="handleChangeImageUrl"
+              >
+                <img v-if="imageUrl" :src="imageUrl" alt="avatar" width="100">
+                <div v-else>
+                  <loading-outlined v-if="loading" />
+                  <plus-outlined v-else />
+                  <div class="ant-upload-text">Upload</div>
+                </div>
+              </a-upload>
+            </a-form-item>
+            <a-form-item ref="avatar" label="背景图" name="avatar">
+              <a-upload
+                v-model:file-list="fileList"
+                name="img"
+                list-type="picture-card"
+                class="bg-uploader"
+                style="width: 100%;"
+                :show-upload-list="false"
+                action="http://127.0.0.1:3000/api/images/avatar"
+                :before-upload="beforeUpload"
+                @change="handleChangeBgUrl"
+              >
+                <img v-if="bgUrl" :src="bgUrl" alt="bgUrl" class="bg-img">
+                <div v-else>
+                  <loading-outlined v-if="loading" />
+                  <plus-outlined v-else />
+                  <div class="ant-upload-text">Upload</div>
+                </div>
+              </a-upload>
+            </a-form-item>
+            <a-form-item ref="nickname" label="昵称" name="nickname">
+              <a-input v-model:value="formState.nickname" />
+            </a-form-item>
+            <a-form-item ref="email" label="邮箱" name="email">
+              <a-input v-model:value="formState.email" />
+            </a-form-item>
+            <a-form-item ref="description" label="个性签名" name="description">
+              <a-input v-model:value="formState.description" />
+            </a-form-item>
+            <a-form-item>
+              <a-button type="primary" @click="onSubmit">修改</a-button>
+            </a-form-item>
+          </a-form>
+        </a-card>
+      </a-col>
+      <a-col :span="12">
+        <a-card title="自定义个人档案">
+          <ChangeProfile />
+        </a-card>
+      </a-col>
+    </a-row>
   </div>
 </template>
 
 <style lang="less" scoped>
-.avatar-uploader > .ant-upload {
-  overflow: hidden;
-  width: 128px;
-  height: 128px;
-}
-.avatar-uploader > .ant-upload > img {
-  max-width: 100%;
-}
+.changeUserinfo{
 
-.bg-uploader .bg-img {
-  max-width: 100%;
-}
+  .avatar-uploader > .ant-upload {
+    overflow: hidden;
+    width: 128px;
+    height: 128px;
+  }
+  .avatar-uploader > .ant-upload > img {
+    max-width: 100%;
+  }
 
-.ant-upload-select-picture-card i {
-  font-size: 32px;
-  color: #999;
-}
+  .bg-uploader .bg-img {
+    max-width: 100%;
+  }
 
-.ant-upload-select-picture-card .ant-upload-text {
-  margin-top: 8px;
-  color: #666;
+  .ant-upload-select-picture-card i {
+    font-size: 32px;
+    color: #999;
+  }
+
+  .ant-upload-select-picture-card .ant-upload-text {
+    margin-top: 8px;
+    color: #666;
+  }
 }
 </style>

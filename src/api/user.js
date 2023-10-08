@@ -21,6 +21,13 @@ export const userApi = () => {
         method: 'post',
         data
       })
+    },
+    setUserProfile: (data) => {
+      return request({
+        url: 'user/setUserProfile',
+        method: 'post',
+        data
+      })
     }
   }
 }
