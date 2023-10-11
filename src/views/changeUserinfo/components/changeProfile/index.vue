@@ -1,22 +1,26 @@
 <script setup>
-import { reactive, ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { PlusOutlined, MinusCircleOutlined } from '@ant-design/icons-vue'
+import useUserStore from '@/stores/module/user'
+
+const userStore = useUserStore()
+userStore.fetchUserProfile()
 
 const formRef = ref()
 
-const dynamicValidateForm = reactive({
+const dynamicValidateForm = ref({
   profile: []
 })
 
 const removeUser = item => {
-  const index = dynamicValidateForm.profile.indexOf(item)
+  const index = dynamicValidateForm.value.profile.indexOf(item)
   if (index !== -1) {
-    dynamicValidateForm.profile.splice(index, 1)
+    dynamicValidateForm.value.profile.splice(index, 1)
   }
 }
 
 const addUser = () => {
-  dynamicValidateForm.profile.push({
+  dynamicValidateForm.value.profile.push({
     first: '',
     last: '',
     icon: '',
@@ -24,14 +28,17 @@ const addUser = () => {
   })
 }
 
-const onFinish = values => {
-  console.log('Received values of form:', values)
-  console.log('dynamicValidateForm.profile:', dynamicValidateForm.profile)
+const onFinish = async (values) => {
+  await userStore.fetchSetUserProfile({ profiles: JSON.stringify(values) })
 }
+
+onMounted(() => {
+  const usesrStore = useUserStore()
+  dynamicValidateForm.value = usesrStore.userProfile
+})
 </script>
 
 <template>
-  {{ dynamicValidateForm }}
   <a-form
     ref="formRef"
     name="dynamic_form_nest_item"
@@ -80,7 +87,7 @@ const onFinish = values => {
       </a-button>
     </a-form-item>
     <a-form-item>
-      <a-button type="primary" html-type="submit">Submit</a-button>
+      <a-button type="primary" html-type="submit">保存</a-button>
     </a-form-item>
   </a-form>
 </template>

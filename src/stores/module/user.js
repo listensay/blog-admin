@@ -6,7 +6,8 @@ import { message } from 'ant-design-vue'
 const useUserStore = defineStore('useUser', {
   state: () => ({
     token: getToken() ? getToken() : '',
-    userinfo: ''
+    userinfo: '',
+    userProfile: ''
   }),
   actions: {
     // 获取用户信息
@@ -28,10 +29,21 @@ const useUserStore = defineStore('useUser', {
         console.log(error)
       }
     },
-    async fetchChangeUserProfile(data) {
+    async fetchSetUserProfile(data) {
       try {
         const result = await userApi().setUserProfile(data)
+        message.success(result.message)
+        this.fetchUserProfile()
         return result.success
+      } catch (error) {
+        message.error(error.message)
+      }
+    },
+    async fetchUserProfile() {
+      try {
+        const result = await userApi().userProfile()
+        this.userProfile = JSON.parse(result.data.profiles)
+        return result
       } catch (error) {
         message.error(error.message)
       }

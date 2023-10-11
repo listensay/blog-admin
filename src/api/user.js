@@ -4,7 +4,7 @@ export const userApi = () => {
   return {
     login: (data) => {
       return request({
-        url: '/user/login',
+        url: 'user/login',
         method: 'post',
         data
       })
@@ -27,6 +27,11 @@ export const userApi = () => {
         url: 'user/setUserProfile',
         method: 'post',
         data
+      })
+    },
+    userProfile: () => {
+      return request({
+        url: 'user/userProfile'
       })
     }
   }
