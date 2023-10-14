@@ -10,6 +10,9 @@ import pinia from './stores'
 
 const app = createApp(App)
 
+const $baseurl = import.meta.env.VITE_BASE_URL
+app.provide('$baseurl', $baseurl)
+
 app.use(router)
 app.use(pinia)
 app.use(DatePicker)

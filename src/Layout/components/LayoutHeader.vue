@@ -4,6 +4,7 @@ import { removeToken } from '@/utils/auth'
 import { useRouter } from 'vue-router'
 import { message } from 'ant-design-vue'
 import useUserStore from '../../stores/module/user'
+import { inject, ref } from 'vue'
 const router = useRouter()
 const userStore = useUserStore()
 
@@ -16,6 +17,8 @@ const logout = () => {
 const changeUserinfo = () => {
   router.push({ path: '/changeUserinfo' })
 }
+
+const baseurl = ref(inject('$baseurl'))
 </script>
 
 <template>
@@ -25,12 +28,12 @@ const changeUserinfo = () => {
     </div>
     <div class="right">
       <a-dropdown>
-        <a class="ant-dropdown-link" @click.prevent style="color: #fff; display: block">
+        <a class="ant-dropdown-link" style="color: #fff; display: block" @click.prevent>
           <a-avatar
             size="large"
-            :src="userStore.userinfo.avatar"
+            :src="baseurl + userStore.userinfo.avatar"
             :style="{ verticalAlign: 'middle', 'margin-right': '5px' }"
-          ></a-avatar>
+          />
           {{ userStore.userinfo.nickname }}
           <DownOutlined />
         </a>

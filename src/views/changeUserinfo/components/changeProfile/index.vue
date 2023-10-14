@@ -32,9 +32,9 @@ const onFinish = async (values) => {
   await userStore.fetchSetUserProfile({ profiles: JSON.stringify(values) })
 }
 
-onMounted(() => {
-  const usesrStore = useUserStore()
-  dynamicValidateForm.value = usesrStore.userProfile
+onMounted(async () => {
+  await userStore.fetchUserProfile()
+  dynamicValidateForm.value = userStore.userProfile
 })
 </script>
 

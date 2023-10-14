@@ -7,7 +7,7 @@ const useUserStore = defineStore('useUser', {
   state: () => ({
     token: getToken() ? getToken() : '',
     userinfo: '',
-    userProfile: ''
+    userProfile: {}
   }),
   actions: {
     // 获取用户信息

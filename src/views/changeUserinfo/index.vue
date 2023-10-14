@@ -1,11 +1,12 @@
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, inject } from 'vue'
 import ChangeProfile from './components/changeProfile/index.vue'
 import { message } from 'ant-design-vue'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import useUserStore from '../../stores/module/user'
 import { storeToRefs } from 'pinia'
 const userStore = useUserStore()
+userStore.fetchUserProfile()
 const { userinfo } = storeToRefs(userStore)
 
 const nickname = ref(userinfo.value.nickname)
@@ -129,6 +130,8 @@ const onSubmit = () => {
       console.log('error', error)
     })
 }
+
+const baseurl = ref(inject('$baseurl'))
 </script>
 
 <template>
@@ -144,11 +147,11 @@ const onSubmit = () => {
                 list-type="picture-card"
                 class="avatar-uploader"
                 :show-upload-list="false"
-                action="http://127.0.0.1:3000/api/images/avatar"
+                :action="baseurl + '/api/upload/images'"
                 :before-upload="beforeUpload"
                 @change="handleChangeImageUrl"
               >
-                <img v-if="imageUrl" :src="imageUrl" alt="avatar" width="100">
+                <img v-if="imageUrl" :src="baseurl + imageUrl" alt="avatar" width="100">
                 <div v-else>
                   <loading-outlined v-if="loading" />
                   <plus-outlined v-else />
@@ -164,11 +167,11 @@ const onSubmit = () => {
                 class="bg-uploader"
                 style="width: 100%;"
                 :show-upload-list="false"
-                action="http://127.0.0.1:3000/api/images/avatar"
+                :action="baseurl + '/api/upload/images'"
                 :before-upload="beforeUpload"
                 @change="handleChangeBgUrl"
               >
-                <img v-if="bgUrl" :src="bgUrl" alt="bgUrl" class="bg-img">
+                <img v-if="bgUrl" :src="baseurl + bgUrl" alt="bgUrl" class="bg-img">
                 <div v-else>
                   <loading-outlined v-if="loading" />
                   <plus-outlined v-else />

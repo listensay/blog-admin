@@ -6,7 +6,7 @@ import router from '../router'
 
 // create an axios instance
 const service = axios.create({
-  baseURL: 'http://127.0.0.1:3000/api',
+  baseURL: import.meta.env.VITE_BASE_URL + '/api',
   timeout: 5000 // request timeout
 })
 
@@ -15,7 +15,7 @@ service.interceptors.request.use(
   (config) => {
     const userStore = useUserStore()
     if (userStore.token) {
-      config.headers['Authorization'] = 'Bearer ' + getToken()
+      config.headers.Authorization = 'Bearer ' + getToken()
     }
     return config
   },

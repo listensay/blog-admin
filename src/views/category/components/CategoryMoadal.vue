@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, defineEmits, ref, toRaw, reactive, onMounted, watch, watchEffect } from 'vue'
+import { defineProps, defineEmits, ref, toRaw, reactive, onMounted, watch, watchEffect, inject } from 'vue'
 import { message } from 'ant-design-vue'
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons-vue'
 
@@ -135,6 +135,7 @@ const onSubmit = () => {
     })
 }
 
+const baseurl = ref(inject('$baseurl'))
 </script>
 
 <template>
@@ -165,11 +166,11 @@ const onSubmit = () => {
             list-type="picture-card"
             class="avatar-uploader"
             :show-upload-list="false"
-            action="http://127.0.0.1:3000/api/images/avatar"
+            :action="baseurl + '/upload/images'"
             :before-upload="beforeUpload"
             @change="handleChangeImageUrl"
           >
-            <img v-if="imageUrl" :src="imageUrl" alt="avatar" width="100">
+            <img v-if="imageUrl" :src="baseurl + imageUrl" alt="avatar" width="100">
             <div v-else>
               <loading-outlined v-if="loading" />
               <plus-outlined v-else />

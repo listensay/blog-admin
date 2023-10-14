@@ -3,7 +3,7 @@ import useCategoryStore from '@/stores/module/category'
 import { storeToRefs } from 'pinia'
 import CategoryMoadal from './components/CategoryMoadal.vue'
 
-import { ref } from 'vue'
+import { inject, ref } from 'vue'
 import { message } from 'ant-design-vue'
 const categoryStore = useCategoryStore()
 categoryStore.fetchGetCategory()
@@ -58,6 +58,8 @@ const deleteHandle = async (id) => {
     message.success(result.message)
   }
 }
+
+const baseurl = ref(inject('$baseurl'))
 </script>
 
 <template>
@@ -71,7 +73,7 @@ const deleteHandle = async (id) => {
           </template>
           <!-- 创建日期 -->
           <template v-if="column.dataIndex === 'category_img'">
-            <a-avatar :src="record.category_img" shape="square" :size="70" />
+            <a-avatar :src="baseurl + record.category_img" shape="square" :size="70" />
           </template>
           <template v-if="column.key === 'action'">
             <a-button type="link" @click="showModal(record, 0)">编辑</a-button>
