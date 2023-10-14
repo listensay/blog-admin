@@ -62,6 +62,13 @@ const router = createRouter({
           meta: {
             hiding: true
           }
+        },
+        {
+          path: '/images',
+          component: () => import('@/views/images/index.vue'),
+          meta: {
+            title: '图片管理'
+          }
         }
       ]
     },

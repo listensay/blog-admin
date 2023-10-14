@@ -166,7 +166,7 @@ const baseurl = ref(inject('$baseurl'))
             list-type="picture-card"
             class="avatar-uploader"
             :show-upload-list="false"
-            :action="baseurl + '/upload/images'"
+            :action="baseurl + '/api/upload/images'"
             :before-upload="beforeUpload"
             @change="handleChangeImageUrl"
           >
