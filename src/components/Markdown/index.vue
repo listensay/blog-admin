@@ -5,9 +5,12 @@
 </template>
 
 <script setup>
-import MKEditor from '@toast-ui/editor'
 import '@toast-ui/editor/dist/toastui-editor.css'
-import { defineProps, onMounted, defineExpose, computed, watch } from 'vue'
+import MKEditor from '@toast-ui/editor'
+import { defineProps, onMounted, defineExpose, computed, watch, ref, inject } from 'vue'
+import axios from 'axios'
+
+const baseurl = ref(inject('$baseurl'))
 
 const props = defineProps({
   content: { type: String, default: '' },
@@ -29,7 +32,31 @@ const initMkeditor = () => {
     el,
     height: `${props.height}px`,
     previewStyle: 'vertical',
-    language: 'zh-CN'
+    language: 'zh-CN',
+    hooks: {
+      addImageBlobHook: async (blob, callback) => {
+        const formData = new FormData()
+        formData.append('img', blob)
+        // 这里打印出是空对象
+        console.log(formData)
+        // 替换为您的图片上传API
+        const result = await axios({
+          url: baseurl.value + '/api/upload/images',
+          method: 'POST',
+          data: formData,
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+
+        const imgUrl = ref(baseurl.value + result.data.data.img)
+
+        callback(imgUrl.value, 'alt text')
+
+        // 阻止默认的图片上传
+        return false
+      }
+    }
   })
 
   // 数据回显
