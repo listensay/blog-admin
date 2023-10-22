@@ -33,6 +33,7 @@ const getArticleContent = async post_id => {
       category_value.value = result.data.list[0].category_id
       imageUrl.value = result.data.list[0].cover
       description.value = result.data.list[0].description
+      style.value = result.data.list[0].style
     })
   } catch (error) {
     console.log(error)
@@ -68,7 +69,8 @@ const onSubmit = () => {
               content: markdownRef.value.getContent(),
               category_id: category_value.value,
               cover: imageUrl.value,
-              description: description.value
+              description: description.value,
+              style: style.value
             })
             .then((res) => {
               if (res.success) {
@@ -134,6 +136,7 @@ const fileList = ref([])
 const loading = ref(false)
 const imageUrl = ref('')
 const description = ref('')
+const style = ref('')
 
 const handleChange = info => {
   if (info.file.status === 'uploading') {
@@ -211,6 +214,13 @@ const baseurl = ref(inject('$baseurl'))
                 :filter-option="filterOption"
               />
             </a-form-item>
+            <a-from-item label="文章组件风格">
+              <a-radio-group v-model:value="style" button-style="solid">
+                <a-radio-button :value="1">文章有缩略图风格</a-radio-button>
+                <a-radio-button :value="2">社交动态风格</a-radio-button>
+                <a-radio-button :value="3">文章无缩略图风格</a-radio-button>
+              </a-radio-group>
+            </a-from-item>
             <a-form-item ref="category" label="文章封面" name="cover">
               <a-upload
                 v-model:file-list="fileList"
@@ -230,7 +240,7 @@ const baseurl = ref(inject('$baseurl'))
                 </div>
               </a-upload>
             </a-form-item>
-            <a-form-item ref="category" label="文章摘要" name="cover">
+            <a-form-item label="文章摘要">
               <a-textarea v-model:value="description" :rows="3" />
             </a-form-item>
           </a-form>
